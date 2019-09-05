@@ -42,7 +42,7 @@ export class AppFinalProjectComponent implements OnInit {
         console.log(form.submitted);
         this.show2 = true;
         var headers = new HttpHeaders().set('Content-Type', 'application/json');
-        debugger;
+       // debugger;
         this.http.post<any>("http://localhost:8080/news/addHaber", {
             "baslik": form.value['title'],
             "icerik": form.value['context']
