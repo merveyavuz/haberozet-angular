@@ -1,5 +1,4 @@
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Natural Language Processig</title>
@@ -9,13 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </head>
-<body>
 
+
+<body>   
     <div class="container">
         <h1>
             {{message}}
         </h1>
-        
 
         <form #myform="ngForm" (ngSubmit)="register(myform)">
             <div class="form-group">
@@ -36,13 +35,23 @@
         </form>
 
         <ng-container *ngIf="show2">
-        <div class="loading"></div>
+            <div class="loading"></div>
         </ng-container>
 
+         <form #myform2="ngForm" (ngSubmit)="registerLink(myform2)">
+            <div class="form-group">
+                <label for="url">Link</label>
+                <input name="url" id="url" type="text" ngModel required class="form-control">
+
+            </div>
+            <button class="btn btn-primary">Submit Link</button>
+        </form>
+        
         <ng-container *ngIf="show">
             <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
             <h5> {{ozet}}</h5>
         </ng-container>
+
     </div>
 
 

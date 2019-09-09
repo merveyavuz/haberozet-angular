@@ -31,6 +31,7 @@ export class AppFinalProjectComponent implements OnInit {
     message = 'Natural Language Processing';
     baslik = '';
     ozet = '';
+    link = '';
     public model: Ozet;
     public show: boolean = false;
     public show2: boolean = false;
@@ -66,6 +67,34 @@ export class AppFinalProjectComponent implements OnInit {
                     console.log("The POST observable is now completed.");
                 });
     }
+
+
+    registerLink(form: NgForm) {
+        console.log(form.value['link'])
+        this.show2 = true;
+        var headers = new HttpHeaders().set('Content-Type', 'application/json');
+       // debugger;
+        this.http.post<any>("http://localhost:8080/news/addLink", {
+            "url": form.value['url']
+        })
+            .subscribe(
+                (val) => {
+                    console.log("POST call successful value returned in body",
+                        val);
+                    this.show2 = false;
+                    this.show = true;
+                    this.ozet = Ozet.create(val)+"";   
+                },
+                response => {
+                    this.show2 = false;
+                    console.log("POST call in error", response);
+                },
+                () => {
+                    this.show2 = false;
+                    console.log("The POST observable is now completed.");
+                });
+    }
+
     constructor(private http: HttpClient) {
     }
 
