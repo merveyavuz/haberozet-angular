@@ -19,6 +19,9 @@ h1 {
 .text-style{
     white-space: pre-wrap
 }
+div.white-space-pre-line {
+    white-space: pre-line;
+}
 
 /* Transparent Overlay */
 .loading:before {

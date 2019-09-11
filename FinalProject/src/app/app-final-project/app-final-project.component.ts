@@ -55,7 +55,13 @@ export class AppFinalProjectComponent implements OnInit {
                     this.show2 = false;
                     this.show = true;
                     this.baslik = form.value['title'];
-                    this.ozet = Ozet.create(val);
+                     var o = Ozet.create(val)+"";
+                    var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
+                    var txt="";
+                    sentences.forEach(element => {
+                        txt += element+"\n";
+                   });
+                    this.ozet=txt;
 
                 },
                 response => {
@@ -88,6 +94,7 @@ export class AppFinalProjectComponent implements OnInit {
                     sentences.forEach(element => {
                         txt += element+"\n";
                    });
+                   this.baslik = "";
                     this.ozet=txt;
                   //  this.ozet = Ozet.create(val);
                 },
