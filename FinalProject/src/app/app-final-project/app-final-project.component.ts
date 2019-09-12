@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
@@ -27,15 +27,30 @@ import { Ozet } from './ozet';
 })
 
 export class AppFinalProjectComponent implements OnInit {
+    @ViewChild('tabs') tabs; 
+      activeTab = 'yaziOzeti';
+    
+  yaziOzeti(activeTab){
+    this.activeTab = activeTab;
+  }
 
+
+  linkOzeti(activeTab){
+    this.activeTab = activeTab;
+  }
+  
     message = 'Natural Language Processing';
     baslik = '';
     ozet = '';
+     ozetLink = '';
     link = '';
     public model: Ozet;
     public show: boolean = false;
+    public showLinkOzet: boolean = false;
     public show2: boolean = false;
     public loading = false;
+
+    
 
     register(form: NgForm) {
         console.log(form.value);
@@ -87,7 +102,7 @@ export class AppFinalProjectComponent implements OnInit {
                     console.log("POST call successful value returned in body",
                         val);
                     this.show2 = false;
-                    this.show = true;
+                    this.showLinkOzet = true;
                     var o = Ozet.create(val)+"";
                     var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
                     var txt="";
@@ -95,7 +110,7 @@ export class AppFinalProjectComponent implements OnInit {
                         txt += element+"\n";
                    });
                    this.baslik = "";
-                    this.ozet=txt;
+                    this.ozetLink=txt;
                   //  this.ozet = Ozet.create(val);
                 },
                 response => {
@@ -109,9 +124,11 @@ export class AppFinalProjectComponent implements OnInit {
     }
 
     constructor(private http: HttpClient) {
+
     }
 
     ngOnInit(): void {
+        
     }
 
 }

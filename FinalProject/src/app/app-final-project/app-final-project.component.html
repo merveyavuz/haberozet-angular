@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Natural Language Processig</title>
@@ -7,54 +8,101 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 </head>
 
 
-<body>   
-    <div class="container">
-        <h1>
-            {{message}}
-        </h1>
+<body>
 
-        <form #myform="ngForm" (ngSubmit)="register(myform)">
-            <div class="form-group">
-                <label for="title">Başlık</label>
-                <input name="title" id="title" type="text" ngModel required class="form-control">
+    <div id="tabs" style="padding-left: 10px;" #tabs>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#YaziOzeti" [ngClass]="{ 'active':activeTab==='yaziOzeti'}"
+                    (click)="yaziOzeti('yaziOzeti')" data-toggle="tab">Yazı Özeti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#LinkOzeti" [ngClass]="{ 'active':activeTab==='linkOzeti'}" data-toggle="tab"
+                    (click)="linkOzeti('linkOzeti')">Link Özeti</a>
+            </li>
+        </ul>
+
+
+
+        <div class="tab-content">
+            <div style="padding-top: 20px;" class="tab-pane" id="yaziOzeti"
+                [ngClass]="{ 'active':activeTab==='yaziOzeti'}">
+
+
+                <div style="padding-top: 10px;" class="container">
+                    <h1>
+                        {{message}}
+                    </h1>
+
+                    <form #myform="ngForm" (ngSubmit)="register(myform)">
+                        <div class="form-group">
+                            <label for="title">Başlık</label>
+                            <input name="title" id="title" type="text" ngModel required class="form-control">
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="context">İçerik</label>
+                            <textarea rows="15" name="context" id="context" type="text" ngModel required
+                                class="form-control"></textarea>
+
+                        </div>
+
+                        <button class="btn btn-primary">Submit</button>
+                    </form>
+
+                    <ng-container *ngIf="show2">
+                        <div class="loading"></div>
+                    </ng-container>
+
+
+
+                    <ng-container *ngIf="show">
+                        <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
+                        <main role="main" class="container">
+                            <p style="margin-bottom: 2rem;white-space:pre-wrap;">{{ozet}}</p>
+                        </main>
+
+                    </ng-container>
+
+                </div>
 
 
             </div>
+            <div style="padding-top: 20px;" class="tab-pane" id="linkOzeti"
+                [ngClass]="{ 'active':activeTab==='linkOzeti'}">
+                <div style="padding-top: 20px;" class="container">
+                    <form #myform2="ngForm" (ngSubmit)="registerLink(myform2)">
+                        <div class="form-group">
+                            <label for="url">Link</label>
+                            <input name="url" id="url" type="text" ngModel required class="form-control">
 
-            <div class="form-group">
-                <label for="context">İçerik</label>
-                <textarea rows="15" name="context" id="context" type="text" ngModel required
-                    class="form-control"></textarea>
+                        </div>
+                        <button class="btn btn-primary">Submit Link</button>
+                    </form>
+
+                    <ng-container *ngIf="show2">
+                        <div class="loading"></div>
+                    </ng-container>
+
+                    <ng-container *ngIf="showLinkOzet">
+                        <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
+                        <main role="main" class="container">
+                            <p style="margin-bottom: 2rem;white-space:pre-wrap;">{{ozetLink}}</p>
+                        </main>
+
+                    </ng-container>
+                </div>
+
 
             </div>
-
-            <button class="btn btn-primary">Submit</button>
-        </form>
-
-        <ng-container *ngIf="show2">
-            <div class="loading"></div>
-        </ng-container>
-
-         <form #myform2="ngForm" (ngSubmit)="registerLink(myform2)">
-            <div class="form-group">
-                <label for="url">Link</label>
-                <input name="url" id="url" type="text" ngModel required class="form-control">
-
-            </div>
-            <button class="btn btn-primary">Submit Link</button>
-        </form>
-        
-        <ng-container *ngIf="show">
-            <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
-           <main role="main" class="container">
-            <p style="margin-bottom: 2rem;white-space:pre-wrap;">{{ozet}}</p>
-            </main>
-           <!--  <h5> {{ozet}} </h5>.-->
-           
-        </ng-container>
+        </div>
 
     </div>
 
