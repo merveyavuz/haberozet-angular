@@ -9,6 +9,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+
 </head>
 
 
@@ -27,8 +31,6 @@
             </li>
         </ul>
 
-
-
         <div class="tab-content">
             <div style="padding-top: 20px;" class="tab-pane" id="yaziOzeti"
                 [ngClass]="{ 'active':activeTab==='yaziOzeti'}">
@@ -42,16 +44,13 @@
                     <form #myform="ngForm" (ngSubmit)="register(myform)">
                         <div class="form-group">
                             <label for="title">Başlık</label>
-                            <input name="title" id="title" type="text" ngModel required class="form-control">
-
-
+                            <input style="height:30px" name="title" id="title" type="text" ngModel required class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="context">İçerik</label>
                             <textarea rows="15" name="context" id="context" type="text" ngModel required
                                 class="form-control"></textarea>
-
                         </div>
 
                         <button class="btn btn-primary">Submit</button>
@@ -61,28 +60,31 @@
                         <div class="loading"></div>
                     </ng-container>
 
-
-
                     <ng-container *ngIf="show">
                         <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
                         <main role="main" class="container">
-                            <p style="margin-bottom: 2rem;white-space:pre-wrap;">{{ozet}}</p>
+                            <p style="margin-bottom: 10rem;white-space:pre-wrap;">{{ozet}}</p>
                         </main>
-
                     </ng-container>
-
                 </div>
-
 
             </div>
             <div style="padding-top: 20px;" class="tab-pane" id="linkOzeti"
                 [ngClass]="{ 'active':activeTab==='linkOzeti'}">
                 <div style="padding-top: 20px;" class="container">
+
+                    <select  [(ngModel)]="selectpicker"  id="selectpicker" (change)="selector($event.target.value)" class="selectpicker">
+                        <option  value="hürriyet" (click)="selector('hürriyet')">Hürriyet</option>
+                        <option value="milliyet" (click)="selector('milliyet')">Milliyet</option>
+                         <option value="sabah" (click)="selector('sabah')">Sabah</option>
+                          <option value="posta" (click)="selector('posta')">Posta</option>
+                    </select>
+
+
                     <form #myform2="ngForm" (ngSubmit)="registerLink(myform2)">
                         <div class="form-group">
-                            <label for="url">Link</label>
-                            <input name="url" id="url" type="text" ngModel required class="form-control">
-
+                            <label style="margin-top: 2rem" for="url">Link</label>
+                            <input style="height:30px" name="url" id="url" type="text" ngModel required class="form-control">
                         </div>
                         <button class="btn btn-primary">Submit Link</button>
                     </form>
@@ -92,15 +94,12 @@
                     </ng-container>
 
                     <ng-container *ngIf="showLinkOzet">
-                        <h4> {{baslik}} <span class="label label-default">Özet</span> </h4>
+                        <h4><span class="label label-default">Özet</span> </h4>
                         <main role="main" class="container">
-                            <p style="margin-bottom: 2rem;white-space:pre-wrap;">{{ozetLink}}</p>
+                            <p style="margin-bottom: 10rem;white-space:pre-wrap;">{{ozetLink}}</p>
                         </main>
-
                     </ng-container>
                 </div>
-
-
             </div>
         </div>
 
