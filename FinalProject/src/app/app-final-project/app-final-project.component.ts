@@ -27,22 +27,28 @@ import { Ozet } from './ozet';
 })
 
 export class AppFinalProjectComponent implements OnInit {
-    @ViewChild('tabs') tabs; 
-      activeTab = 'yaziOzeti';
-    
-  yaziOzeti(activeTab){
-    this.activeTab = activeTab;
-  }
+    @ViewChild('tabs') tabs;
+    @ViewChild('selectpicker') selectpicker;
+    activeTab = 'yaziOzeti';
+    select = '';
+    yaziOzeti(activeTab) {
+        this.activeTab = activeTab;
+    }
+
+    linkOzeti(activeTab) {
+        this.activeTab = activeTab;
+    }
+
+    selector(select) {
+        this.select = select;
+        console.log(select);
+    }
 
 
-  linkOzeti(activeTab){
-    this.activeTab = activeTab;
-  }
-  
     message = 'Natural Language Processing';
     baslik = '';
     ozet = '';
-     ozetLink = '';
+    ozetLink = '';
     link = '';
     public model: Ozet;
     public show: boolean = false;
@@ -50,7 +56,7 @@ export class AppFinalProjectComponent implements OnInit {
     public show2: boolean = false;
     public loading = false;
 
-    
+
 
     register(form: NgForm) {
         console.log(form.value);
@@ -58,7 +64,7 @@ export class AppFinalProjectComponent implements OnInit {
         console.log(form.submitted);
         this.show2 = true;
         var headers = new HttpHeaders().set('Content-Type', 'application/json');
-       // debugger;
+        // debugger;
         this.http.post<any>("http://localhost:8080/news/addHaber", {
             "baslik": form.value['title'],
             "icerik": form.value['context']
@@ -70,13 +76,13 @@ export class AppFinalProjectComponent implements OnInit {
                     this.show2 = false;
                     this.show = true;
                     this.baslik = form.value['title'];
-                     var o = Ozet.create(val)+"";
+                    var o = Ozet.create(val) + "";
                     var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
-                    var txt="";
+                    var txt = "";
                     sentences.forEach(element => {
-                        txt += element+"\n";
-                   });
-                    this.ozet=txt;
+                        txt += element + "\n";
+                    });
+                    this.ozet = txt;
 
                 },
                 response => {
@@ -93,9 +99,10 @@ export class AppFinalProjectComponent implements OnInit {
     registerLink(form: NgForm) {
         this.show2 = true;
         var headers = new HttpHeaders().set('Content-Type', 'application/json');
-       // debugger;
+        // debugger;
         this.http.post<any>("http://localhost:8080/news/addLink", {
-            "url": form.value['url']
+            "url": form.value['url'],
+            "brand": this.select
         })
             .subscribe(
                 (val) => {
@@ -103,15 +110,15 @@ export class AppFinalProjectComponent implements OnInit {
                         val);
                     this.show2 = false;
                     this.showLinkOzet = true;
-                    var o = Ozet.create(val)+"";
+                    var o = Ozet.create(val) + "";
                     var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
-                    var txt="";
+                    var txt = "";
                     sentences.forEach(element => {
-                        txt += element+"\n";
-                   });
-                   this.baslik = "";
-                    this.ozetLink=txt;
-                  //  this.ozet = Ozet.create(val);
+                        txt += element + "\n";
+                    });
+
+                    this.ozetLink = txt;
+                    //  this.ozet = Ozet.create(val);
                 },
                 response => {
                     this.show2 = false;
@@ -128,7 +135,7 @@ export class AppFinalProjectComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
+
     }
 
 }
