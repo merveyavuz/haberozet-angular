@@ -31,11 +31,17 @@ export class AppFinalProjectComponent implements OnInit {
     @ViewChild('selectpicker') selectpicker;
     activeTab = 'yaziOzeti';
     select = '';
+    fileSelect: string = "Select File";
+
     yaziOzeti(activeTab) {
         this.activeTab = activeTab;
     }
 
     linkOzeti(activeTab) {
+        this.activeTab = activeTab;
+    }
+
+    dosyaOzeti(activeTab) {
         this.activeTab = activeTab;
     }
 
@@ -50,9 +56,13 @@ export class AppFinalProjectComponent implements OnInit {
     ozet = '';
     ozetLink = '';
     link = '';
+    ozetFile = '';
+    files = null;
+
     public model: Ozet;
     public show: boolean = false;
     public showLinkOzet: boolean = false;
+    public showFileOzet: boolean = false;
     public show2: boolean = false;
     public loading = false;
 
@@ -130,6 +140,32 @@ export class AppFinalProjectComponent implements OnInit {
                 });
     }
 
+    onFileChange(event) {
+        let reader = new FileReader();
+        this.files = event.target.files;
+        let fileName = this.files[0].name;
+        console.log(fileName);
+        this.fileSelect = fileName;
+    }
+
+    submitFile() {
+        let file = this.files[0];
+        console.log(file);
+        console.log(file.name);
+
+        this.show2 = true;
+        // debugger;
+
+        const formData = new FormData();
+
+        formData.append('file', file, file.name);
+        this.http.post('http://localhost:8080/news/addFile', formData).subscribe(
+            data => console.log(data),
+            err => console.log(err)
+        );
+
+    }
+
     constructor(private http: HttpClient) {
 
     }
@@ -139,4 +175,3 @@ export class AppFinalProjectComponent implements OnInit {
     }
 
 }
-
