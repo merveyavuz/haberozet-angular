@@ -58,6 +58,10 @@ export class AppFinalProjectComponent implements OnInit {
     link = '';
     ozetFile = '';
     files = null;
+    fileTitle = '';
+    fileTxt = '';
+    txtTitle;
+    txt = '';
 
     public model: Ozet;
     public show: boolean = false;
@@ -141,12 +145,66 @@ export class AppFinalProjectComponent implements OnInit {
     }
 
     onFileChange(event) {
-        let reader = new FileReader();
         this.files = event.target.files;
         let fileName = this.files[0].name;
-        console.log(fileName);
         this.fileSelect = fileName;
     }
+
+
+    storeResults(result) {
+        this.txt = result;
+
+        const lines = this.txt.split('\n');
+        this.fileTitle = lines[0];
+        for (let line = 1; line < lines.length; line++) {
+            this.fileTxt += lines[line];
+        }
+
+        console.log("fileTitle: " + this.fileTitle);
+        console.log("filetxt: " + this.fileTxt);
+        this.show2 = true;
+        let headers = new HttpHeaders().set('Content-Type', 'application/json');
+        // debugger;
+        this.http.post<any>("http://localhost:8080/news/addFile", {
+            "baslik": this.fileTitle,
+            "icerik": this.fileTxt
+        })
+            .subscribe(
+                (val) => {
+                    console.log("POST call successful value returned in body",
+                        val);
+                    this.show2 = false;
+                    this.showFileOzet = true;
+                    var o = Ozet.create(val) + "";
+                    var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
+                    var txt = "";
+                    sentences.forEach(element => {
+                        txt += element + "\n";
+                    });
+
+                    this.ozetFile = txt;
+                    //  this.ozet = Ozet.create(val);
+                },
+                response => {
+                    this.show2 = false;
+                    console.log("POST call in error", response);
+                },
+                () => {
+                    this.show2 = false;
+                    console.log("The POST observable is now completed.");
+                });
+
+    }
+
+    registerFile() {
+        const reader = new FileReader();
+        reader.readAsText(this.files[0]);
+        reader.onload = () => this.storeResults(reader.result);
+    }
+
+
+
+
 
     submitFile() {
         let file = this.files[0];

@@ -112,20 +112,24 @@
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                    Choose File <input type="file" id="pdf-file" name="file" style="display: none;"
+                                    Choose File <input type="file" accept=".txt" id="pdf-file" name="file" style="display: none;"
                                         (change)="onFileChange($event)">
                                 </span>
                             </label>
                             <input type="text" class="form-control" id="pdf-name" style="height:30px"
                                 [(ngModel)]="fileSelect" placeholder="{{fileSelect}}" readonly>
                             <label class="input-group-btn">
-                                <button class="btn btn-primary" (click)="submitFile()">Submit File</button>
+                                <button class="btn btn-primary" (click)="registerFile()">Submit File</button>
                             </label>
                         </div>
 
                     </div>
 
                     <br /> <br />
+                    <ng-container *ngIf="show2">
+                        <div class="loading"></div>
+                    </ng-container>
+                    
                     <ng-container *ngIf="showFileOzet">
                         <h4><span class="label label-default">Özet</span> </h4>
                         <main role="main" class="container">
