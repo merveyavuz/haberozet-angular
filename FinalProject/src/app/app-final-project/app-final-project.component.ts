@@ -6,6 +6,9 @@ import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http'
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/internal/operators/map';
 import { Ozet } from './ozet';
+import PDFReader from 'react-typescript-pdf-reader'
+
+
 
 @Component({
     selector: 'app-app-final-project',
@@ -62,6 +65,7 @@ export class AppFinalProjectComponent implements OnInit {
     fileTxt = '';
     txtTitle;
     txt = '';
+    rangeValue = 50;
 
     public model: Ozet;
     public show: boolean = false;
@@ -81,7 +85,8 @@ export class AppFinalProjectComponent implements OnInit {
         // debugger;
         this.http.post<any>("http://localhost:8080/news/addHaber", {
             "baslik": form.value['title'],
-            "icerik": form.value['context']
+            "icerik": form.value['context'],
+            "ozetYuzdesi": this.rangeValue
         })
             .subscribe(
                 (val) => {
@@ -156,6 +161,7 @@ export class AppFinalProjectComponent implements OnInit {
 
         const lines = this.txt.split('\n');
         this.fileTitle = lines[0];
+        this.fileTxt = "";
         for (let line = 1; line < lines.length; line++) {
             this.fileTxt += lines[line];
         }
@@ -198,11 +204,15 @@ export class AppFinalProjectComponent implements OnInit {
 
     registerFile() {
         const reader = new FileReader();
-        reader.readAsText(this.files[0]);
+        reader.readAsText(this.files[0], 'UTF-8');
         reader.onload = () => this.storeResults(reader.result);
     }
 
 
+
+    range(event) {
+        this.rangeValue = event;
+    }
 
 
 

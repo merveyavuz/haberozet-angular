@@ -9,15 +9,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
-
 
 </head>
 
 
 <body>
+
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+        }
+    </script>
 
     <div id="tabs" style="padding-left: 10px;" #tabs>
         <ul class="nav nav-tabs">
@@ -54,6 +60,14 @@
                             <textarea rows="15" name="context" id="context" type="text" ngModel required
                                 class="form-control"></textarea>
                         </div>
+
+
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="99" value="50" class="slider" id="myRange"  (change)="range($event.target.value)">
+                            <p>Özet yüzdesi: {{rangeValue}}</p>
+                        </div>
+
+
                         <button class="btn btn-primary">Submit</button>
                     </form>
 
@@ -112,11 +126,11 @@
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                    Choose File <input type="file" accept=".txt" id="pdf-file" name="file" style="display: none;"
-                                        (change)="onFileChange($event)">
+                                    Choose File <input type="file" accept=".txt" id="pdf-file" name="file"
+                                        style="display: none;" (change)="onFileChange($event)">
                                 </span>
                             </label>
-                            <input type="text" class="form-control" id="pdf-name" style="height:30px"
+                            <input type="text" class="form-control" id="pdf-name" style="height:34px"
                                 [(ngModel)]="fileSelect" placeholder="{{fileSelect}}" readonly>
                             <label class="input-group-btn">
                                 <button class="btn btn-primary" (click)="registerFile()">Submit File</button>
@@ -129,7 +143,7 @@
                     <ng-container *ngIf="show2">
                         <div class="loading"></div>
                     </ng-container>
-                    
+
                     <ng-container *ngIf="showFileOzet">
                         <h4><span class="label label-default">Özet</span> </h4>
                         <main role="main" class="container">
