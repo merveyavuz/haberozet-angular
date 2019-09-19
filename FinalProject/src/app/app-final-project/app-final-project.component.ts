@@ -6,14 +6,14 @@ import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http'
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/internal/operators/map';
 import { Ozet } from './ozet';
-import PDFReader from 'react-typescript-pdf-reader'
-
+import { HaberService } from './haber.service';
 
 
 @Component({
     selector: 'app-app-final-project',
     templateUrl: './app-final-project.component.html',
-    styleUrls: ['./app-final-project.component.css']
+    styleUrls: ['./app-final-project.component.css'],
+    providers: [HaberService]
 })
 
 @NgModule({
@@ -72,58 +72,47 @@ export class AppFinalProjectComponent implements OnInit {
     public showLinkOzet: boolean = false;
     public showFileOzet: boolean = false;
     public show2: boolean = false;
-    public loading = false;
 
-
-
-    register(form: NgForm) {
-        console.log(form.value);
-        console.log(form.touched);
-        console.log(form.submitted);
+     register(form: NgForm) {
         this.show2 = true;
-        var headers = new HttpHeaders().set('Content-Type', 'application/json');
-        // debugger;
-        this.http.post<any>("http://localhost:8080/news/addHaber", {
-            "baslik": form.value['title'],
-            "icerik": form.value['context'],
-            "ozetYuzdesi": this.rangeValue
-        })
-            .subscribe(
-                (val) => {
-                    console.log("POST call successful value returned in body",
-                        val);
-                    this.show2 = false;
-                    this.show = true;
-                    this.baslik = form.value['title'];
-                    var o = Ozet.create(val) + "";
-                    var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
-                    var txt = "";
-                    sentences.forEach(element => {
-                        txt += element + "\n";
-                    });
-                    this.ozet = txt;
-
-                },
-                response => {
-                    this.show2 = false;
-                    console.log("POST call in error", response);
-                },
-                () => {
-                    this.show2 = false;
-                    console.log("The POST observable is now completed.");
-                });
-    }
+        let t = form.value['title'];
+        let c = form.value['context'];
+        let r = this.rangeValue;
+        this.haberService.getYaziOzeti(t, c, r, 'addHaber')
+             .subscribe(
+                 (val) => {
+                     console.log("POST call successful value returned in body",
+                         val);
+                     this.show2 = false;
+                     this.show = true;
+                     this.baslik = form.value['title'];
+                     var o = Ozet.create(val) + "";
+                     var sentences = o.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|");
+                     var txt = "";
+                     sentences.forEach(element => {
+                         txt += element + "\n";
+                     });
+                     this.ozet = txt;
+ 
+                 },
+                 response => {
+                     this.show2 = false;
+                     console.log("POST call in error", response);
+                 },
+                 () => {
+                     this.show2 = false;
+                     console.log("The POST observable is now completed.");
+                 });
+     }
 
 
     registerLink(form: NgForm) {
         this.show2 = true;
-        var headers = new HttpHeaders().set('Content-Type', 'application/json');
-        // debugger;
-        this.http.post<any>("http://localhost:8080/news/addLink", {
-            "url": form.value['url'],
-            "brand": this.select
-        })
-            .subscribe(
+
+        let u =form.value['url'];
+        let b = this.select;
+        this.haberService.getLinkOzeti(u, b,  'addLink')
+        .subscribe(
                 (val) => {
                     console.log("POST call successful value returned in body",
                         val);
@@ -137,7 +126,6 @@ export class AppFinalProjectComponent implements OnInit {
                     });
 
                     this.ozetLink = txt;
-                    //  this.ozet = Ozet.create(val);
                 },
                 response => {
                     this.show2 = false;
@@ -166,15 +154,10 @@ export class AppFinalProjectComponent implements OnInit {
             this.fileTxt += lines[line];
         }
 
-        console.log("fileTitle: " + this.fileTitle);
-        console.log("filetxt: " + this.fileTxt);
+        let fT= this.fileTitle;
+        let fTxt= this.fileTxt;
         this.show2 = true;
-        let headers = new HttpHeaders().set('Content-Type', 'application/json');
-        // debugger;
-        this.http.post<any>("http://localhost:8080/news/addFile", {
-            "baslik": this.fileTitle,
-            "icerik": this.fileTxt
-        })
+        this.haberService.getDosyaOzeti(fT, fTxt,  'addFile')
             .subscribe(
                 (val) => {
                     console.log("POST call successful value returned in body",
@@ -234,7 +217,7 @@ export class AppFinalProjectComponent implements OnInit {
 
     }
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private haberService: HaberService) {
 
     }
 
